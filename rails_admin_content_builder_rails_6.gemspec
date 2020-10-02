@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["giuliano@agenciaw3.digital"]
 
   spec.summary       = "Easy way for create contents using rails_admin on Rails 6"
-  spec.description   = "Easy way for create contents using rails_admin on Rails 6"
+  spec.description   = "Easy way for create contents using rails_admin on Rails 6 now with improvements and bug fixes"
   spec.homepage      = "https://github.com/thefalked/rails_admin_content_builder_rails_6"
   spec.license       = "MIT"
 
@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'factory_girl_rails', '~> 4.7', '>= 4.7.0'
   spec.add_development_dependency 'faker', '~> 1.6', '>= 1.6.3'
 
-  spec.add_runtime_dependency 'carrierwave', '>= 2.0'
+  spec.add_runtime_dependency 'carrierwave', '~> 2.0'
   spec.add_runtime_dependency 'medium-editor-rails', '~> 2.1', '>= 2.1.0'
   spec.add_runtime_dependency 'mini_magick', '~> 4.5', '>= 4.5.1'
   spec.add_runtime_dependency 'friendly_id', '~> 5.1', '>= 5.1.0'
