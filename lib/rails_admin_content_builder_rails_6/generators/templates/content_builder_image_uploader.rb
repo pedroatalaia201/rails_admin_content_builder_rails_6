@@ -53,19 +53,11 @@ class ContentBuilderImageUploader < CarrierWave::Uploader::Base
   # for jpeg). Optionally, a "gravity" may be specified, as above.
   version :left_or_right do
     process resize_to_fit: [640, 360]
-    process quality: 60
   end
 
   version :center do
     process resize_to_fit: [1280, 720]
-    process quality: 80
   end
-
-  # Use quality to compress the image
-  # version :thumb_large do
-  #   process resize_to_fit: [1280, 720]
-  #   process quality: 60
-  # end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
