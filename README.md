@@ -97,6 +97,8 @@ In your show content view
 </article>
 ```
 
+You can see more stuff on the [Wiki](https://github.com/thefalked/rails_admin_content_builder_rails_6/wiki) page!
+
 ## Attributes and Methods
 
 ```ruby
@@ -121,7 +123,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rails_admin_content_builder_rails_6. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/thefalked/rails_admin_content_builder_rails_6. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
