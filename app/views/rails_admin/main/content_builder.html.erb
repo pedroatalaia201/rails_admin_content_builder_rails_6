@@ -1,0 +1,102 @@
+<%= stylesheet_link_tag 'rails_admin/content_builder' %>
+<%= javascript_include_tag 'rails_admin/content_builder' %>
+
+<div class="cb-snippet">
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '1'} do %>
+    <%= image_tag 'cb-snippet-text.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.text') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '2'} do %>
+    <%= image_tag 'cb-snippet-image-text.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.image_left') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '3'} do %>
+    <%= image_tag 'cb-snippet-text-image.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.image_right') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '4'} do %>
+    <%= image_tag 'cb-snippet-image.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.image_center') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '5'} do %>
+    <%= image_tag 'cb-snippet-video.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.video') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '6'} do %>
+    <%= image_tag 'cb-snippet-quote-text.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.blockquote_right') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '7'} do %>
+    <%= image_tag 'cb-snippet-text-quote.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.blockquote_left') %>
+    </span>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '8'} do %>
+    <%= image_tag 'cb-snippet-quote.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.blockquote_center') %>
+    </span>
+  <% end %>
+
+  <% if(!(ENV['RAILS_ADMIN_CONTENT_BUILDER_RELATED'].present? &&
+  ENV['RAILS_ADMIN_CONTENT_BUILDER_RELATED'] == "false")) %>
+    <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '9'} do %>
+      <%= image_tag 'cb-snippet-relational-text.jpg', class: 'cb-snippet__image' %>
+      <span class="cb-snippet__caption">
+        <%= t('admin.actions.content_builder.snippet.related_content_right') %>
+      </span>
+    <% end %>
+
+    <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '10'} do %>
+      <%= image_tag 'cb-snippet-text-relational.jpg', class: 'cb-snippet__image' %>
+      <span class="cb-snippet__caption">
+        <%= t('admin.actions.content_builder.snippet.related_content_left') %>
+      </span>
+    <% end %>
+  <% end %>
+
+  <%= link_to '#', class: 'cb-snippet__btn', data: {snippet: '11'} do %>
+    <%= image_tag 'cb-snippet-gallery.jpg', class: 'cb-snippet__image' %>
+    <span class="cb-snippet__caption">
+      <%= t('admin.actions.content_builder.snippet.gallery') %>
+    </span>
+  <% end %>
+</div>
+
+<%= simple_form_for rails_admin.content_builder_url(@abstract_model.to_param, id: @object.id), html: { class: 'cb-form' }, remote: false do |f| %>
+  <div class="cb-controls">
+    <%= f.button :submit, t('admin.actions.content_builder.button.save'), name: 'save', class: 'btn btn-block btn-primary btn-right' %>
+    <% if @object.status %>
+      <%= f.button :submit, t('admin.actions.content_builder.button.unpublish'), name: 'unpublish', class: 'btn btn-block btn-danger btn-left' %>
+    <% else %>
+      <%= f.button :submit, t('admin.actions.content_builder.button.publish'), name: 'publish', class: 'btn btn-block btn-success btn-left' %>
+    <% end %>
+  </div>
+
+  <div id="cb-container">
+    <%= @object.content.try(:html_safe) %>
+  </div>
+
+  <%= f.input :id, as: :hidden, :input_html => { :name => "id", :value => @object.id } %>
+  <%= f.input :content, as: :hidden, :input_html => { :name => "content", :id => "content", :value => @object.content } %>
+<% end %>

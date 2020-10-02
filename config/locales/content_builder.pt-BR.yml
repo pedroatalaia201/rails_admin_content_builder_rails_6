@@ -1,0 +1,32 @@
+pt-BR:
+  admin:
+    actions:
+      content_builder:
+        title: "Criar Notícia"
+        menu: "Criar Notícia"
+        breadcrumb: "Criar Notícia"
+        delete_block: "Deseja mesmo remover esse conteúdo?"
+        success_save: "Atualizado com sucesso"
+        error_save: "Erro ao atualizar"
+        written_by: "Autor"
+        news_source: "Fonte"
+        summary: "Resumo"
+        url: "Cole a url do YouTube"
+        invalid_url: "Ops! Você não informou uma url válida"
+        image_description: 'Divulgação'
+        search_content: 'Buscar notícias'
+        button:
+          save: "Salvar"
+          publish: "Publicar"
+          unpublish: 'Despublicar'
+        snippet:
+          text: "Texto"
+          image_left: "Imagem a esquerda"
+          image_right: "Imagem a direita"
+          image_center: "Imagem centralizada"
+          video: "Vídeo"
+          blockquote_right: "Citação a esqueda"
+          blockquote_left: "Citação a direita"
+          blockquote_center: "Citação centralizada"
+          related_content_right: "Notícias relacionadas a esquerda"
+          related_content_left: "Notícias relacionadas a direita"

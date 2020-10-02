@@ -1,0 +1,32 @@
+en:
+  admin:
+    actions:
+      content_builder:
+        title: "Create News"
+        menu: "Create New"
+        breadcrumb: "Create New"
+        delete_block: "Do you want to remove this content?"
+        success_save: "Successfully updated"
+        error_save: "Error updating"
+        written_by: "Writter By"
+        news_source: "News source"
+        summary: "Summary"
+        url: "Paste YouTube url"
+        invalid_url: "Invalid url"
+        image_description: 'Image description'
+        search_content: 'Search Content'
+        button:
+          save: "Save"
+          publish: "Publish"
+          unpublish: 'Unpublish'
+        snippet:
+          text: "Text"
+          image_left: "Image left"
+          image_right: "Image right"
+          image_center: "Image center"
+          video: "video"
+          blockquote_right: "Blockquote right"
+          blockquote_left: "Blockquote left"
+          blockquote_center: "Blockquote center"
+          related_content_right: "Related content right"
+          related_content_left: "Related content left"

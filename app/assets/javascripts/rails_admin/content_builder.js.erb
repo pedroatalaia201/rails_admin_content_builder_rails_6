@@ -1,0 +1,374 @@
+//= require medium-editor
+//= require_tree ./helpers
+
+// reload the page so it doesn't duplicate the js called in the view
+$(".pjax").click(function () {
+  setTimeout(function (){
+    location.reload();
+  }, 100);
+});
+
+// when rails admin ready
+$(document).on('rails_admin.dom_ready', function () {
+  activeSortable();
+  console.log("ready")
+
+  $('.cb-form').on('submit', function (e) {
+    // remove all attributes of cb-text
+    $('.cb-text').replaceWith(function () {
+      return $('<' + this.nodeName + '>')
+        .addClass($(this).attr('class'))
+        .append($(this).contents());
+    });
+
+    // remove all attributes of cb-editable
+    $('.cb-editable').replaceWith(function () {
+      return $('<' + this.nodeName + '>')
+        .addClass($(this).attr('class'))
+        .append($(this).contents());
+    });
+
+    // get all content of container
+    var content = $('#cb-container').html();
+
+    // set content in input file
+    $('#content').attr('value', content);
+  });
+
+  $('.cb-content .cb-search').each(function () {
+    autocomplete($(this).parents(".cb-content").attr('id'));
+  });
+
+  $('.cb-content-gallery').each(function () {
+    addEventToInputFileGallery($(this).attr('id'));
+  });
+
+  $('#cb-container').sortable({
+    revert: true,
+    placeholder: 'ui-sortable-placeholder',
+    handle: '.cb-tools__btn--move',
+    cursor: 'move',
+  });
+
+  activeMediumEditor();
+});
+
+// when click on delete button
+$(document).on('click', '.cb-tools__btn--delete', function (e) {
+  e.preventDefault()
+
+  var resp = confirm('<%= I18n.t('admin.actions.content_builder.delete_block') %>');
+
+  if (resp) {
+    $($(this).attr('href')).remove();
+  }
+});
+
+// when click on tools buttons
+$(document).on('click', '.cb-tools__btn', function (e) {
+  e.preventDefault();
+});
+
+// when click on upload button
+$(document).on('click', '.cb-tools__btn--upload', function () {
+  $($(this).attr('href')).find('input').trigger('click');
+});
+
+// when click on youtube buttons
+$(document).on('click', '.cb-tools__btn--youtube', function () {
+  var resp = prompt('<%= I18n.t('admin.actions.content_builder.url')%>', '');
+  resp = youtubeParser(resp);
+
+  if (resp) {
+    var href = $(this).attr('href');
+    $(href).find('iframe').attr('src', 'https://www.youtube.com/embed/' + resp + '?rel=0&amp;showinfo=0');
+  }
+});
+
+// when click on snippet buttons
+$(document).on('click', '.cb-snippet__btn', function (e) {
+  e.preventDefault();
+
+  var snippet = $(this).attr('data-snippet');
+  var container = $('#cb-container');
+  var id = generateID();
+
+  switch (snippet) {
+    case '1':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem.</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      scrollTo(id);
+    break;
+
+    case '2':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<figure class="cb-figure cb-figure--left">';
+      element += '<div class="cb-figure__clip">';
+      element += '<%= image_tag('cb-image-default.jpg') %>';
+      element += '<input id="' + id + '" data-position="left" class="filePicker cb-tools__input cb-tools__input--upload" type="file" name="cb-image">';
+      element += '<div class="cb-tools cb-tools--center">';
+      element += '<a class="cb-tools__btn cb-tools__btn--upload fa fa-camera" href="#' + id + '"></a>';
+      element += '</div>';
+      element += '</div>';
+      element += '<figcaption class="cb-figcaption cb-text">';
+      element += '<%= I18n.t('admin.actions.content_builder.image_description')%>';
+      element += '</figcaption>';
+      element += '</figure>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem.</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    // Image center
+    case '3':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<figure class="cb-figure cb-figure--right">';
+      element += '<div class="cb-figure__clip">';
+      element += '<%= image_tag('cb-image-default.jpg') %>';
+      element += '<input id="' + id + '" data-position="right" class="filePicker cb-tools__input cb-tools__input--upload" type="file" name="cb-image">';
+      element += '<div class="cb-tools cb-tools--center">';
+      element += '<a class="cb-tools__btn cb-tools__btn--upload fa fa-camera" href="#' + id + '"></a>';
+      element += '</div>';
+      element += '</div>';
+      element += '<figcaption class="cb-figcaption cb-text">';
+      element += '<%= I18n.t('admin.actions.content_builder.image_description')%>';
+      element += '</figcaption>';
+      element += '</figure>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem.</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    case '4':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<figure class="cb-figure cb-figure--center">';
+      element += '<div class="cb-figure__clip">';
+      element += '<%= image_tag('cb-image-default.jpg') %>';
+      element += '<input id="' + id + '" data-position="center" class="filePicker cb-tools__input cb-tools__input--upload" type="file" name="cb-image">';
+      element += '<div class="cb-tools cb-tools--center">';
+      element += '<a class="cb-tools__btn cb-tools__btn--upload fa fa-camera" href="#' + id + '"></a>';
+      element += '</div>';
+      element += '</div>';
+      element += '<figcaption class="cb-figcaption cb-text">';
+      element += '<%= I18n.t('admin.actions.content_builder.image_description')%>';
+      element += '</figcaption>';
+      element += '</figure>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    case '5':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<div class="cb-video cb-video--center">';
+      element += '<iframe id="' + id + '" src="" frameborder="0" allowfullscreen></iframe>';
+      element += '<div class="cb-tools cb-tools--center">';
+      element += '<a class="cb-tools__btn cb-tools__btn--upload cb-tools__btn--youtube fa fa-youtube-play" href="#' + id + '"></a>';
+      element += '</div>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    case '6':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<blockquote class="cb-blockquote cb-blockquote--left">';
+      element += '<div class="cb-blockquote__text cb-text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis</p></div>';
+      element += '<footer class="cb-blockquote__footer cb-text">Lorem Ipsum</footer>';
+      element += '</blockquote>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem.</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    case '7':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<blockquote class="cb-blockquote cb-blockquote--right">';
+      element += '<div class="cb-blockquote__text cb-text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis</p></div>';
+      element += '<footer class="cb-blockquote__footer cb-text">Lorem Ipsum</footer>';
+      element += '</blockquote>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem..</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    case '8':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<blockquote class="cb-blockquote">';
+      element += '<div class="cb-blockquote__text cb-text"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis</p></div>';
+      element += '<footer class="cb-blockquote__footer cb-text">Lorem Ipsum</footer>';
+      element += '</blockquote>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem..</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFile(id);
+      scrollTo(id);
+    break;
+
+    case '9':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<aside class="cb-relational cb-relational--left">'
+      element += '<h2 class="cb-relational__title">Saiba mais</h2>';
+      element += '<input class="cb-search" type="text" name="search" placeholder="<%= I18n.t('admin.actions.content_builder.search_content')%>">';
+      element += '<ol class="cb-relational__list"></ol>';
+      element += '</aside>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem..</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      autocomplete(id);
+      scrollTo(id);
+      activeSortable();
+    break;
+
+    case '10':
+      var element = '<div id="' + id + '" class="cb-content">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+
+      element += '<aside class="cb-relational cb-relational--right">'
+      element += '<h2 class="cb-relational__title">Saiba mais</h2>';
+      element += '<input class="cb-search" type="text" name="search" placeholder="<%= I18n.t('admin.actions.content_builder.search_content')%>">';
+      element += '<ol class="cb-relational__list"></ol>';
+      element += '</aside>';
+
+      element += '<div class="cb-text">';
+      element += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis congue pharetra. Proin quis commodo odio. Fusce a sapien massa. Praesent ultrices dolor at risus porttitor, nec semper orci ornare. Nullam nisi eros, pellentesque et suscipit ac, ultrices eget lorem. Donec ipsum tellus, aliquet vitae metus ut, tempus viverra lorem.</p>';
+      element += '</div>';
+
+      element += '</div>';
+
+      container.append(element);
+      autocomplete(id);
+      scrollTo(id);
+      activeSortable();
+    break;
+
+    case '11':
+      var element = '<div id="' + id + '" class="cb-content-gallery">';
+
+      element += '<div class="cb-tools">';
+      element += '<a class="cb-tools__btn cb-tools__btn--move fa fa-arrows" href="#"></a>';
+      element += '<input id="' + id + '" data-position="center" class="filePicker cb-tools__input cb-tools__input--upload" type="file" name="cb-image" multiple>';
+      element += '<a class="cb-tools__btn cb-tools__btn--upload fa fa-camera" href="#' + id + '"></a>';
+      element += '<a class="cb-tools__btn cb-tools__btn--delete fa fa-trash" href="#' + id + '"></a>';
+      element += '</div>';
+      element += '<div class="cb-gallery"></div>';
+      element += '</div>';
+
+      container.append(element);
+      addEventToInputFileGallery(id);
+      scrollTo(id);
+      activeSortable();
+    break;
+  };
+
+  activeMediumEditor();
+});  
