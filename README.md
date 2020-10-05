@@ -67,7 +67,7 @@ ENV['RAILS_ADMIN_CONTENT_BUILDER_RELATED'] = 'false'
 
 ## Usage
 
-For custom model, see: [Customizing Model](https://github.com/luizpicolo/rails_admin_content_builder/wiki/Customizing-model)
+For custom model, see: [Customizing Model](https://github.com/thefalked/rails_admin_content_builder_rails_6/wiki/Customizing-model)
 
 Include in your controller
 
