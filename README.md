@@ -1,5 +1,7 @@
 # RailsAdminContentBuilderRails6
 
+[![Gem Version](https://badge.fury.io/rb/rails_admin_content_builder_rails_6.svg)](https://badge.fury.io/rb/rails_admin_content_builder_rails_6)
+
 Easy way for create contents using [rails_admin](https://github.com/sferik/rails_admin).
 This gem is an update of [rails_admin_content_builder](https://github.com/luizpicolo/rails_admin_content_builder), it has bugfixes, improvements and now works on Rails 6.
 
@@ -34,6 +36,22 @@ Run the generator and migrations
 
     rails g rails_admin_content_builder
     rake db:migrate
+
+After running the generator, set the module like this in `config -> initializers -> carrierwave.rb`. This is used to low the quality of the image, leaving it light and you can use for all uploaders.
+
+```ruby
+module CarrierWave
+  module MiniMagick
+    def quality(percentage)
+      manipulate! do |img|
+        img.quality(percentage.to_s)
+        img = yield(img) if block_given?
+        img
+      end
+    end
+  end
+end
+```
 
 Add styles in app/assets/application.scss
 

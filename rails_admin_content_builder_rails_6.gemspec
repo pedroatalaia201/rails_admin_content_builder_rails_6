@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = "Easy way for create contents using rails_admin on Rails 6 now with improvements and bug fixes"
   spec.homepage      = "https://github.com/thefalked/rails_admin_content_builder_rails_6"
   spec.license       = "MIT"
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
 

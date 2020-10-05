@@ -35,28 +35,14 @@ class ContentBuilderImageUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   # Use quality to compress the image
-  # resize_to_limit - Resize the image to fit within the specified dimensions while 
-  # retaining the original aspect ratio. Will only resize the image if it is larger 
-  # than the specified dimensions. The resulting image may be shorter or narrower 
-  # than specified in the smaller dimension but will not be larger than the specified 
-  # values.
-  # resize_to_fit - Resize the image to fit within the specified dimensions while 
-  # retaining the original aspect ratio. The image may be shorter or narrower than 
-  # specified in the smaller dimension but will not be larger than the specified values.
-  # resize_to_fill - Resize the image to fit within the specified dimensions while 
-  # retaining the aspect ratio of the original image. If necessary, crop the image in 
-  # the larger dimension. Optionally, a "gravity" may be specified, for example 
-  # "Center", or "NorthEast".
-  # resize_and_pad - Resize the image to fit within the specified dimensions while 
-  # retaining the original aspect ratio. If necessary, will pad the remaining area 
-  # with the given color, which defaults to transparent (for gif and png, white 
-  # for jpeg). Optionally, a "gravity" may be specified, as above.
   version :left_or_right do
     process resize_to_fit: [640, 360]
+    process quality: 80
   end
 
   version :center do
     process resize_to_fit: [1280, 720]
+    process quality: 80
   end
 
   # Add a white list of extensions which are allowed to be uploaded.
