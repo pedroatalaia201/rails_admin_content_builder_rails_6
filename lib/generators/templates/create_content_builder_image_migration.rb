@@ -1,4 +1,4 @@
-class CreateContentBuilderImages < ActiveRecord::Migration[6.0]
+class CreateContentBuilderImages < ActiveRecord::Migration[7.0]
   def change
     create_table :content_builder_images do |t|
       t.string :image
