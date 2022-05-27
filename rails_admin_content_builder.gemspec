@@ -43,4 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'simple_form', '~> 5.1.0'
   spec.add_runtime_dependency 'search_cop', '~> 1.2.0' # Search engine like fulltext query support for ActiveRecord
   spec.add_runtime_dependency 'rails-html-sanitizer', '~> 1.4.2'
+  # test
 end
