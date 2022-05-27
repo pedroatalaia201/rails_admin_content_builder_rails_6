@@ -28,19 +28,19 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.0", "< 3.0"
   spec.add_development_dependency "rake", "~> 10.0", "< 14.0"
   spec.add_development_dependency 'rails', '~> 7.0.0', '< 8'
-  spec.add_development_dependency 'rails_admin', '~> 3.0.0'
-  spec.add_development_dependency 'capybara', '~> 3.37.0'
-  spec.add_development_dependency 'launchy', '~> 2.4', '>= 2.5.0 '
-  spec.add_development_dependency 'shoulda-matchers', '~> 5.1.0'
-  spec.add_development_dependency 'selenium-webdriver', '~> 4.0.0'
-  spec.add_development_dependency 'factory_girl_rails', '~> 4.7', '>= 4.7.0'
-  spec.add_development_dependency 'faker', '~> 1.6', '>= 1.6.3'
+  spec.add_development_dependency 'rails_admin', '~> 3.0.0' 
+  spec.add_development_dependency 'capybara', '~> 3.37.0' # Test by simulate how a user should use your web site
+  spec.add_development_dependency 'launchy', '~> 2.4', '>= 2.5.0' # Helper class for launching cross-platform applications 
+  spec.add_development_dependency 'shoulda-matchers', '~> 5.1.0' # Provides RSpec- and Minitest-compatible one-liners to test common Rails functionality 
+  spec.add_development_dependency 'selenium-webdriver', '~> 4.0.0' # Implements the W3C WebDriver protocol to automate popular browsers
+  spec.add_development_dependency 'factory_girl_rails', '~> 4.7', '< 5.0.0' # provides integration between factory_girl and rails 3 or newer 
+  spec.add_development_dependency 'faker', '~> 1.6', '< 3.0.0' # A port of Data::Faker from Perl, is used to easily generate fake data
 
   spec.add_runtime_dependency 'carrierwave', '~> 2.2.2', "< 3.0.0"
-  spec.add_runtime_dependency 'medium-editor-rails', '~> 2.1', '>= 2.1.0' # Is not maintained anymore
-  spec.add_runtime_dependency 'mini_magick', '~> 4.5', '>= 4.5.1'
-  spec.add_runtime_dependency 'friendly_id', '~> 5.1', '>= 5.1.0' # If it's work set 5.4.0
+  spec.add_runtime_dependency 'medium-editor-rails', '~> 2.1', '< 2.5.0' # Is not maintained anymore(last version 2.3.3)
+  spec.add_runtime_dependency 'mini_magick', '~> 4.11.0'
+  spec.add_runtime_dependency 'friendly_id', '~> 5.1', '>= 5.1.0' # If it doesn't work set 5.4.0
   spec.add_runtime_dependency 'simple_form', '~> 5.1.0'
-  spec.add_runtime_dependency 'search_cop', '~> 1.2.0'
+  spec.add_runtime_dependency 'search_cop', '~> 1.2.0' # Search engine like fulltext query support for ActiveRecord
   spec.add_runtime_dependency 'rails-html-sanitizer', '~> 1.4.2'
 end
